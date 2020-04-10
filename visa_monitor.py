@@ -15,11 +15,10 @@ sender = "realhaoheliu@163.com"#发送方
 recver = "haoheliu@outlook.com"#接收方
 password = "" # 163邮箱的授权码
 
-
 class Visa():
 	def __init__(self):
 		self.url = "https://tuixue.online/visa/?from=singlemessage&isappinstalled=0"
-		self.head = ["更新时间","北京","成都","广州","上海","沈阳"]
+		self.head = ["date","BEIJING","CHENGDU","GUANGZHOU","SHANGHAI","SHENYANG"]
 		self.pattern = re.compile(r'<td>\S*')
 		self.log = ""
 		self.html = ""
@@ -93,7 +92,7 @@ class Visa():
 		if(len(res_compare) != 0):
 			for each in res_compare:
 				h,p,n = each
-				log = "Hurry Up! We got one!"+str(h)+"previous: "+str(p)+"now: "+str(n)
+				log = "Hurry Up! We got one! "+str(h)+" previous: "+str(p)+" and now: "+str(n)
 				self.append_log("Send email: "+log)
 				self.sendmail(content = log,subject = "[Visa] Hurry Up!!!!!!!")
 				self.append_log("Email sending success")
@@ -115,13 +114,14 @@ class Visa():
 
 	def send_email(self,content,subject = "[Visa] New update"):
 		message = MIMEText(content,"plain","utf-8")
+
 		message['Subject'] = subject #邮件标题
 		message['To'] = recver #收件人
 		message['From'] = sender #发件人
-		self.append_log("Send email to"+recver+"\nSubject: "+subject+"\nContent: "+content)
+		self.append_log("Send email to "+recver+"\nSubject: "+subject+"\nContent: "+content)
 		smtp = smtplib.SMTP_SSL("smtp.163.com",994) #实例化smtp服务器
 		smtp.login(sender,password)#发件人登录
-		smtp.sendmail(sender,[recver,sender],message.as_string()) #as_string 对 message 的消息进行了封装
+		smtp.sendmail(sender,[recver,"realhaoheliu@163.com"],message.as_string()) #as_string 对 message 的消息进行了封装
 		smtp.close()
 
 def random_interval():
